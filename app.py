@@ -186,6 +186,7 @@ def pagina_pedidos():
                     })
 
         pedidos.append({
+            "_id": str(p["_id"]),
             "cliente": cliente_nombre,
             "total": p.get("total", 0),
             "fecha": p.get("fecha", ""),
