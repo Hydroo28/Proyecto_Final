@@ -230,7 +230,7 @@ def eliminar_pedido():
     pedido_id = request.form.get("pedido_id")
     if not pedido_id:
         flash("ID de pedido no proporcionado.")
-        return redirect("/pedidos")
+        return redirect("/dashboard")  # Corrige esta línea
 
     try:
         result = pedidos_coleccion.delete_one({"_id": ObjectId(pedido_id)})
@@ -241,7 +241,7 @@ def eliminar_pedido():
     except Exception as e:
         flash(f"Error al eliminar pedido: {str(e)}")
 
-    return redirect("/pedidos")
+    return redirect("/dashboard")  # Corrige esta línea también
 
 # Productos
 @app.route('/productos')
@@ -584,7 +584,6 @@ def realizar_pedido():
 
     flash("Pedido realizado con éxito.")
     return redirect("/tienda")
-
 
 
 

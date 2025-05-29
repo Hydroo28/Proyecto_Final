@@ -13,23 +13,31 @@
                     <th>Total</th>
                     <th>Fecha</th>
                     <th>Productos</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for pedido in pedidos %}
                 <tr>
-                    <td>{{ pedido.cliente }}</td>
+                    <!-- Asumo que en 'pedido' tienes el nombre del cliente o un campo cliente.nombre -->
+                    <td>{{ pedido.cliente.nombre if pedido.cliente is defined else pedido.cliente }}</td>
                     <td>${{ "%.2f"|format(pedido.total) }}</td>
                     <td>{{ pedido.fecha }}</td>
                     <td>
                         <select>
                             {% for producto in pedido.productos %}
-                                {# Usa producto.id o producto._id según cómo venga #}
-                                <option value="{{ producto.id if producto.id is defined else producto._id }}">
+                                <option value="{{ producto.producto_id if producto.producto_id is defined else producto.id if producto.id is defined else producto._id }}">
                                     {{ producto.nombre }} - Cantidad: {{ producto.cantidad }}
                                 </option>
                             {% endfor %}
                         </select>
+                    </td>
+                    <td>
+                        <form method="POST" action="{{ url_for('eliminar_pedido') }}" onsubmit="return confirm('¿Estás seguro de eliminar este pedido?');">
+                            <!-- Importante: Convertir ObjectId a string para que se envíe bien -->
+                            <input type="hidden" name="pedido_id" value="{{ pedido._id|string }}">
+                            <button type="submit" style="background-color: #dc3545; color: white;">Eliminar</button>
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}

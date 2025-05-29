@@ -55,13 +55,8 @@
     </div>
     
     <div>
-        <p>
-            <strong>Clientes activos:</strong> {{ clientes_activos }}
-        </p>
-
-        <p>
-            <strong>Cliente con más pedidos:</strong> {{ cliente_top.nombre }} ({{ cliente_top.pedidos }} pedidos)
-        </p>
+        <p><strong>Clientes activos:</strong> {{ clientes_activos }}</p>
+        <p><strong>Cliente con más pedidos:</strong> {{ cliente_top.nombre }} ({{ cliente_top.pedidos }} pedidos)</p>
     </div>
 
     <!-- ############Pedidos############ -->
@@ -76,6 +71,7 @@
                 <th>Total</th>
                 <th>Fecha</th>
                 <th>Productos</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -87,12 +83,17 @@
                 <td>
                     <select>
                         {% for producto in pedido.productos %}
-                            {# Usa producto.id o producto._id según cómo venga #}
                             <option value="{{ producto.id if producto.id is defined else producto._id }}">
                                 {{ producto.nombre }} - Cantidad: {{ producto.cantidad }}
                             </option>
                         {% endfor %}
                     </select>
+                </td>
+                <td>
+                    <form method="POST" action="{{ url_for('eliminar_pedido') }}">
+                        <input type="hidden" name="pedido_id" value="{{ pedido._id }}">
+                        <button type="submit" style="background-color: #dc3545; color: white;">Eliminar</button>
+                    </form>
                 </td>
             </tr>
             {% endfor %}
